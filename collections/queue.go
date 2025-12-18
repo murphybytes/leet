@@ -10,6 +10,7 @@ type node[T any] struct {
 }
 
 type Queue[T any] struct {
+	size       int
 	head, tail *node[T]
 }
 
@@ -41,6 +42,7 @@ func (q *Queue[T]) BackIter() iter.Seq[T] {
 }
 
 func (q *Queue[T]) PushFront(v T) {
+	q.size += 1
 	n := &node[T]{
 		v: v,
 	}
@@ -57,6 +59,7 @@ func (q *Queue[T]) PushFront(v T) {
 }
 
 func (q *Queue[T]) PopBack() {
+	q.size -= 1
 	q.tail = q.tail.prev
 	if q.tail == nil {
 		q.head = nil
@@ -66,6 +69,7 @@ func (q *Queue[T]) PopBack() {
 }
 
 func (q *Queue[T]) PopFront() {
+	q.size -= 1
 	q.head = q.head.next
 	if q.head == nil {
 		q.tail = nil
@@ -75,6 +79,7 @@ func (q *Queue[T]) PopFront() {
 }
 
 func (q *Queue[T]) PushBack(v T) {
+	q.size += 1
 	n := &node[T]{
 		v: v,
 	}
@@ -100,4 +105,8 @@ func (q *Queue[T]) Front() T {
 
 func (q *Queue[T]) Back() T {
 	return q.tail.v
+}
+
+func (q *Queue[T]) Size() int {
+	return q.size
 }
